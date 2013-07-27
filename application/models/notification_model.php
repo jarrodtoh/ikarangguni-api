@@ -77,7 +77,6 @@ class notification_model extends CI_Model {
      */
     public function create_notification($fields = FALSE) {
         $this->db->set('created_on', 'NOW()', FALSE);
-
         return $this->db->insert($this->tables['notifications']['notifications'], $fields);
     }
 
