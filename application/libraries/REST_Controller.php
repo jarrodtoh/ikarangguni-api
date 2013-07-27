@@ -214,7 +214,12 @@ abstract class REST_Controller extends CI_Controller
 
 		// Merge both for one mega-args variable
 		$this->_args = array_merge($this->_get_args, $this->_put_args, $this->_post_args, $this->_delete_args, $this->{'_'.$this->request->method.'_args'});
-
+    $_REQUEST_PHP_INPUT = json_decode(file_get_contents("php://input"), TRUE);
+    if (is_array($_REQUEST_PHP_INPUT)) {
+      $this->_args = array_merge($this->_args, $_REQUEST_PHP_INPUT);
+    }
+    
+    
 		// Which format should the data be returned in?
 		$this->response = new stdClass();
 		$this->response->format = $this->_detect_output_format();
