@@ -54,6 +54,8 @@ class users_location_model extends CI_Model {
       $fields['user_id'] = $this->session->userdata('user_id');
     }
 
+    $data['user_id'] = $fields['user_id'];
+
     if (isset($fields['latitude'])) {
       $data['latitude'] = $fields['latitude'];
     }
@@ -86,7 +88,6 @@ class users_location_model extends CI_Model {
     return $this->db->update($this->tables['users']['locations'], $data);
   }
 
-  
   public function delete_location($fields = FALSE, $options = FALSE) {
 
     if (!isset($fields['location_id']) || !is_numeric($fields['location_id'])) {
@@ -96,7 +97,7 @@ class users_location_model extends CI_Model {
     $this->db->where('location_id', $fields['location_id']);
     return $this->db->delete($this->tables['users']['locations']);
   }
-  
+
   private function _filters($fields = FALSE, $options = FALSE) {
 
     if (isset($fields['user_id']) && is_numeric($fields['user_id'])) {
