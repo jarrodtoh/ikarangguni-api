@@ -77,6 +77,7 @@ class notification_model extends CI_Model {
      */
     public function create_notification($fields = FALSE) {
         $this->db->set('created_on', 'NOW()', FALSE);
+
         return $this->db->insert($this->tables['notifications']['notifications'], $fields);
     }
 
@@ -106,7 +107,7 @@ class notification_model extends CI_Model {
             return false;
         }
 
-        $permission = array('id', 'sender_id', 'receiver_id', 'photo', 'location', 'remarks', 'status', 'created_on');
+        $permission = array('id', 'sender_id', 'receiver_id', 'photo', 'address', 'coordinates', 'postal_code', 'remarks', 'status', 'created_on');
 
         $notification = null;
         foreach ($permission as $value) {

@@ -80,6 +80,19 @@ class User_library {
 		return $row;
 	}
 
+    public function get_user_by_type($fields = false) {
+
+        if (!isset($fields['user_type']) || !is_numeric($fields['user_type'])) {
+            throw new Exception("Invalid User Type.");
+        }
+        $this->db->select('id as user_id');
+        $this->db->where('user_type', $fields['user_type']);
+        $query = $this->db->get($this->tables['users']['users']);
+        $row = $query->row_array();
+
+        return $this->get_users($row);
+    }
+
 	public function get_users($fields = false) {
 
 		if (isset($fields['keywords'])) {
