@@ -1,0 +1,17 @@
+# Include your project-specific ignores in this file
+# Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
+
+# TasteBuds Specific
+/application/config/*-localhost.php
+/tmp/cache/*
+/media
+/user_guide
+
+# IDE
+/nbproject
+/nbproject/project.properties
+/nbproject/project.xml
+.idea
+
+# PHP Composer
+composer.lock
