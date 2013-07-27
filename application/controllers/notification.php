@@ -3,13 +3,24 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
-require APPPATH . '/libraries/REST_Controller.php';
+require_once APPPATH . '/libraries/REST_Controller.php';
+require_once APPPATH . '/third_party/baidu-bcs/bcs.class.php';
 
 class notification extends REST_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('ion_auth');
         $this->load->model('notification_model');
+
+        $host = 'bcs.duapp.com'; //online
+        $ak = 'D2ab2f4dfc84ab584ad06781bd13df85';
+        $sk = '12c328b686aabd7a2bc06b18b7efe188';
+        $this->bucket = 'karang-guni-photos';
+        $this->upload_dir = "../";
+        $this->object = '/a.txt';
+        $this->fileUpload = './a.txt';
+        $this->fileWriteTo = './a.' . time () . '.txt';
+        $this->baidu_bcs = new BaiduBCS($ak, $sk, $host);
 
         $this->_all_request_parameters = array_merge($this->input->get()? : array(), $this->args());
     }
@@ -59,17 +70,50 @@ class notification extends REST_Controller {
                     $this->response($error_response, 500);
                 }
 
-                if (!isset($fields['location'])) {
+                if (!isset($fields['address'])) {
                     $error_response = array();
-                    $error_response['error'] = 'Location not specified.';
+                    $error_response['error'] = 'Address not specified.';
                     $error_response['code'] = 500;
                     $this->response($error_response, 500);
                 }
 
+                if (!isset($fields['coordinates'])) {
+                    $error_response = array();
+                    $error_response['error'] = 'Coordinates not specified.';
+                    $error_response['code'] = 500;
+                    $this->response($error_response, 500);
+                }
+
+                if (!isset($fields['postal_code'])) {
+                    $error_response = array();
+                    $error_response['error'] = 'Postal Code not specified.';
+                    $error_response['code'] = 500;
+                    $this->response($error_response, 500);
+                }
+
+
+
                 $data['sender_id'] = $fields['sender_id'];
                 $data['receiver_id'] = $fields['receiver_id'];
-                $data['photo'] = $fields['photo'];
-                $data['location'] = $fields['location'];
+
+                // Photo (Base64) conversion
+                $filename = $fields['sender_id'] . '_' . $fields['receiver_id'] . '_' . time();
+                file_put_contents(APPPATH . '/images/'.$filename.'.jpg', base64_decode(
+                    str_replace('data:image/jpeg;base64,', '', $fields['photo'])
+                ));
+                $opt = array();
+                $opt['acl'] = BaiduBCS::BCS_SDK_ACL_TYPE_PUBLIC_WRITE;
+                $opt[BaiduBCS::IMPORT_BCS_LOG_METHOD] = "bs_log";
+                $opt['curlopts'] = array (
+                    CURLOPT_CONNECTTIMEOUT => 10,
+                    CURLOPT_TIMEOUT => 1800 );
+                $response = $this->baidu_bcs->create_object($this->bucket, '/'.$filename.'.jpg', APPPATH . '/images/'.$filename.'.jpg', $opt);
+                $url = $this->baidu_bcs->generate_get_object_url($this->bucket, '/'.$filename.'.jpg');
+
+                $data['photo'] = $url;
+                $data['address'] = $fields['address'];
+                $data['coordinates'] = $fields['coordinates'];
+                $data['postal_code'] = $fields['postal_code'];
                 $data['remarks'] = isset($fields['remarks']) ? $fields['remarks'] : '';
                 $data['status'] = 0;
 

@@ -351,7 +351,7 @@ $config['rest_ajax_only'] = FALSE;
 */
 $config['rest_x_domain'] = TRUE;
 $config['allow_cendentials'] = TRUE;
-$config['allowed_origins'] = array('ikarangguni.localhost', 'ikarangguni.com');
+$config['allowed_origins'] = array('ikarangguni.localhost', 'ikarangguni.com', 'gbinghan.com', 'ikarangguni.ap01.aws.af.cm');
 
 /* End of file config.php */
 /* Location: ./system/application/config/rest.php */
