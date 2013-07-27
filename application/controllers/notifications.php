@@ -8,6 +8,7 @@ require APPPATH . '/libraries/REST_Controller.php';
 class notifications extends REST_Controller {
     public function __construct() {
         parent::__construct();
+        $this->load->library('session');
         $this->load->model('notification_model');
 
         $this->_all_request_parameters = array_merge($this->input->get()? : array(), $this->args());
@@ -16,6 +17,11 @@ class notifications extends REST_Controller {
     public function index_get() {
         try {
             $fields = $this->_all_request_parameters;
+            
+            if (!isset($fields['receiver_id'])) {
+              $fields['receiver_id'] = $this->session->userdata('user_id');
+            }
+            
             $results = $this->notification_model->get_notifications($fields);
 
             if ($results) {
