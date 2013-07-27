@@ -39,6 +39,17 @@ class notification_model extends CI_Model {
          * @return query result
          */
     public function get_notifications($fields = FALSE, $options = FALSE) {
+        if ($fields['sender_id']) {
+            $this->db->where('sender_id', $fields['sender_id']);
+        }
+
+        if ($fields['receiver_id']) {
+            $this->db->where('receiver_id', $fields['receiver_id']);
+        }
+
+        if ($fields['status']) {
+            $this->db->where('status', $fields['status']);
+        }
 
         $query = $this->db->get($this->tables['notifications']['notifications']);
         $_notification_ids = array();

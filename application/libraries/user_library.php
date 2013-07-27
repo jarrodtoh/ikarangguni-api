@@ -189,7 +189,7 @@ class User_library {
 			return false;
 		}
 
-		$permission = array('id', 'user_id', 'username', 'email', 'first_name', 'last_name', 'company', 'phone', 'created_on');
+		$permission = array('id', 'user_id', 'username', 'email', 'first_name', 'last_name', 'company', 'phone', 'created_on', 'user_type');
 
 		foreach ($permission as $value) {
 			$user[$value] = isset($fields[$value]) ? $fields[$value] : '';
