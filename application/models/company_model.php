@@ -40,29 +40,6 @@ class company_model extends CI_Model {
     return $result;
   }
 
-  public function get_location($fields = FALSE, $options = FALSE) {
-
-    $this->_filters($fields, $options);
-
-    $query = $this->db->get($this->tables['users']['users']);
-    $row = $query->row_array();
-
-    return $this->_format_company($row, $options);
-  }
-
-  public function create_location($fields = FALSE, $options = FALSE) {
-    
-  }
-
-  public function update_location($fields = FALSE, $options = FALSE) {
-
-    if (!isset($fields['location_id'])) {
-      
-    } else {
-      
-    }
-  }
-
   private function _filters($fields = FALSE, $options = FALSE) {
 
     if (isset($fields['user_id']) && is_numeric($fields['user_id'])) {

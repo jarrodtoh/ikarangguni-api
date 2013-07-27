@@ -35,6 +35,26 @@ class notifications extends REST_Controller {
       $this->response($error_response, 404);
     }
   }
+  
+  public function history_get() {
+    try {
+      $fields = $this->_all_request_parameters;
+
+      if (!isset($fields['sender_id'])) {
+        $fields['sender_id'] = $this->session->userdata('user_id');
+      }
+
+      $results = $this->notification_model->get_notifications($fields);
+
+      $response_data['data'] = $results;
+      $this->response($response_data, 200);
+    } catch (Exception $e) {
+      $error_response = array();
+      $error_response['error'] = '[Error] ' . $e->getMessage();
+      $error_response['code'] = 404;
+      $this->response($error_response, 404);
+    }
+  }
 
 }
 

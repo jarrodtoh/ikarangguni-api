@@ -66,6 +66,10 @@ class notification extends REST_Controller {
       if (!isset($fields['photo']) || !$fields['photo']) {
         throw new Exception('Photo not specified.');
       }
+      
+      if (!isset($fields['item_type']) || !$fields['item_type']) {
+        throw new Exception('Item type not specified.');
+      }
 
       if (!isset($fields['postal_code']) || !$fields['postal_code']) {
         throw new Exception('Address not specified.');

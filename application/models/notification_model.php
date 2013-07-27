@@ -107,7 +107,7 @@ class notification_model extends CI_Model {
   }
 
   private function _set_filters($fields = FALSE, $options = FALSE) {
-
+    
     if (isset($fields['sender_id']) && is_numeric($fields['sender_id'])) {
       $this->db->where('sender_id', $fields['sender_id']);
     }
