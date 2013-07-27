@@ -12,6 +12,7 @@ class notification_model extends CI_Model {
 
     $this->load->database();
     $this->load->config('tables/notifications', TRUE);
+    $this->load->library('user_library');
 
     //initialize db tables data
     $this->tables = array_merge($this->config->item('tables', 'tables/notifications'));
@@ -45,7 +46,7 @@ class notification_model extends CI_Model {
   public function get_notifications($fields = FALSE, $options = FALSE) {
 
     $this->_set_filters($fields, $options);
-    
+
     $query = $this->db->get($this->tables['notifications']['notifications']);
     $_notification_ids = array();
 
@@ -82,18 +83,31 @@ class notification_model extends CI_Model {
    */
 
   public function update_notification($fields = FALSE) {
+
     if (!isset($fields['id'])) {
       return false;
     }
 
     $this->db->where('id', $fields['id']);
 
+    if (isset($fields['issued_amount'])) {
+      $data['issued_amount'] = $fields['issued_amount'];
+    }
+
+    if (isset($fields['status'])) {
+      $data['status'] = $fields['status'];
+    }
+
+    if (isset($fields['remarks'])) {
+      $data['remarks'] = $fields['remarks'];
+    }
+
     // Exisiting entry exist.
     return $this->db->update($this->tables['notifications']['notifications'], $fields);
   }
 
   private function _set_filters($fields = FALSE, $options = FALSE) {
-    
+
     if (isset($fields['sender_id']) && is_numeric($fields['sender_id'])) {
       $this->db->where('sender_id', $fields['sender_id']);
     }
@@ -105,9 +119,8 @@ class notification_model extends CI_Model {
     if (isset($fields['status']) && is_numeric($fields['status'])) {
       $this->db->where('status', $fields['status']);
     }
-
   }
-  
+
   /*
    * _format_notification
    * 
@@ -125,6 +138,13 @@ class notification_model extends CI_Model {
     //foreach ($permission as $value) {
     //  $notification[$value] = isset($fields[$value]) ? $fields[$value] : '';
     //}
+
+    if (is_numeric($fields['sender_id'])) {
+      $fields['sender'] = $this->user_library->get_user(array('user_id' => $fields['sender_id']));
+    }
+    if (is_numeric($fields['receiver_id'])) {
+      $fields['receiver'] = $this->user_library->get_user(array('user_id' => $fields['receiver_id']));
+    }
 
     return $fields;
   }

@@ -109,6 +109,7 @@ class notification extends REST_Controller {
       $data['unit_no'] = $fields['unit_no'];
       $data['latitude'] = $fields['latitude'];
       $data['longitude'] = $fields['longitude'];
+      $data['item_type'] = $fields['item_type'];
       $data['remarks'] = isset($fields['remarks']) ? $fields['remarks'] : '';
       $data['status'] = 0;
 
@@ -129,23 +130,23 @@ class notification extends REST_Controller {
     }
   }
 
-  public function edit_post() {
+  public function update_post() {
     try {
-      if ($this->ion_auth->logged_in()) {
-        $fields = $this->_all_request_parameters;
-
-        $results = $this->notification_model->update_notification($fields);
-
-        if ($results) {
-          $response_data['data'] = $results;
-          $this->response($response_data, 200);
-        } else {
-          $response_error['data'] = false;
-          $this->response($response_error, 500);
-        }
-      } else {
+      if (!$this->ion_auth->logged_in()) {
         $response_error['data'] = false;
         $this->response($response_error, 403);
+      }
+      
+      $fields = $this->_all_request_parameters;
+
+      $results = $this->notification_model->update_notification($fields);
+
+      if ($results) {
+        $response_data['data'] = $results;
+        $this->response($response_data, 200);
+      } else {
+        $response_error['data'] = false;
+        $this->response($response_error, 500);
       }
     } catch (Exception $e) {
       $error_response = array();
