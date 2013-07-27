@@ -88,9 +88,15 @@ class User_library {
         $this->db->select('id as user_id');
         $this->db->where('user_type', $fields['user_type']);
         $query = $this->db->get($this->tables['users']['users']);
-        $row = $query->row_array();
+        $row = $query->result_array();
+        $users = array();
+        foreach ($row as $fields) {
+            $user = $this->get_user($fields);
+            array_push($users, $user);
+        }
+        //$users = json_encode($users);
+        return $users;
 
-        return $this->get_users($row);
     }
 
 	public function get_users($fields = false) {

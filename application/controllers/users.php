@@ -14,13 +14,7 @@ class Users extends REST_Controller {
 		$this->load->library('ion_auth');
 		$this->load->library('user_library');
 
-        if ($this->input->get()) {
-            $input_array = $this->input->get();
-        }
-        else {
-            $input_array = array();
-        }
-        $this->_all_request_parameters = array_merge($input_array, $this->args());
+		$this->_all_request_parameters = array_merge($this->input->get()? : array(), $this->args());
 	}
 
 	public function index_get() {
