@@ -65,6 +65,22 @@ class notification_model extends CI_Model {
     return $results;
   }
 
+  public function get_balance($fields = FALSE, $options = FALSE) {
+
+    $this->_set_filters($fields, $options);
+
+    $this->db->select('SUM(issued_amount) as sum');
+    $this->db->from($this->tables['notifications']['notifications']);
+    $this->db->group_by("sender_id");
+    $query = $this->db->get();
+    return $query->row_array();
+  }
+
+  public function get_payout_history($fields = FALSE, $options = FALSE) {
+    $fields['issued_amount'] = 0.001;
+    return $this->get_notifications($fields, $options);
+  }
+
   /*
    * create_notification
    *
@@ -107,7 +123,7 @@ class notification_model extends CI_Model {
   }
 
   private function _set_filters($fields = FALSE, $options = FALSE) {
-    
+
     if (isset($fields['sender_id']) && is_numeric($fields['sender_id'])) {
       $this->db->where('sender_id', $fields['sender_id']);
     }
@@ -118,6 +134,10 @@ class notification_model extends CI_Model {
 
     if (isset($fields['status']) && is_numeric($fields['status'])) {
       $this->db->where('status', $fields['status']);
+    }
+
+    if (isset($fields['issued_amount']) && is_numeric($fields['issued_amount'])) {
+      $this->db->where('issued_amount > ', $fields['issued_amount']);
     }
   }
 
