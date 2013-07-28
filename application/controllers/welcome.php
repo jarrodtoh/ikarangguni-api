@@ -62,7 +62,7 @@ class Welcome extends CI_Controller {
     $_I1R_URL['ProcessImageOnly'] = 'http://spdc.i2r.a-star.edu.sg/rest/my3dface_c/ProcessImageOnly?';
     $_I1R_URL['GetPreviousImage'] = 'http://spdc.i2r.a-star.edu.sg/rest/my3dface_c/GetPreviousImage?';
 
-    $_FILENAME = md5($user['email']) .time();
+    $_FILENAME = md5($user['email']) . time();
 
     $_ProcessImageOnly['fName'] = $_FILENAME . '.jpg';
     $_ProcessImageOnly['b64String'] = base64_encode($_binary_data);
@@ -74,7 +74,7 @@ class Welcome extends CI_Controller {
     $result = $this->CURL_POST($_I1R_URL['ProcessImageOnly'], $_ProcessImageOnly);
 
     if (strpos($result, 'Viola Jones face')) {
-      die('Your profile image is not supported. Please change your gravatar profile image.');
+      die('Your profile image is not supported. Please change <a href="' . $user['gravatar'] . '">your gravatar profile image</a>.');
     }
 
     $result = json_decode($result);
