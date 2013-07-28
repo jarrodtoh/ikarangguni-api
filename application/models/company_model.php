@@ -46,14 +46,16 @@ class company_model extends CI_Model {
       $this->db->where('id', $fields['user_id']);
     }
     
+    $_range = 0.1;
+    
     if (isset($fields['latitude'])) {
-      $this->db->where('latitude > ', $fields['latitude'] - 1);
-      $this->db->where('latitude < ', $fields['latitude'] + 1);
+      $this->db->where('latitude > ', (float) $fields['latitude'] - (float) $_range);
+      $this->db->where('latitude < ', (float) $fields['latitude'] + (float) $_range);
     }
 
     if (isset($fields['longitude'])) {
-      $this->db->where('longitude > ', $fields['longitude'] - 1);
-      $this->db->where('longitude < ', $fields['longitude'] + 1);
+      $this->db->where('longitude > ', (float) $fields['longitude'] - (float) $_range);
+      $this->db->where('longitude < ', (float) $fields['longitude'] + (float) $_range);
     }
 
     $this->db->where('user_type', 1);

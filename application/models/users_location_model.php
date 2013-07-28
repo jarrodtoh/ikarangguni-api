@@ -83,6 +83,10 @@ class users_location_model extends CI_Model {
     if (isset($fields['longitude'])) {
       $data['longitude'] = $fields['longitude'];
     }
+    
+    if (isset($fields['postal_code'])) {
+      $data['postal_code'] = $fields['postal_code'];
+    }
 
     $this->db->where('location_id', $fields['location_id']);
     return $this->db->update($this->tables['users']['locations'], $data);
