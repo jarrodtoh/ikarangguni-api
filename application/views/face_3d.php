@@ -27,7 +27,7 @@
 
   <body>
     <div id="info">
-      <a href="http://threejs.org" target="_blank">three.js</a> - OBJMTLLoader test
+      <a href="http://threejs.org" target="_blank">three.js</a> - OBJMTLLoader <?php echo $fName ?>
     </div>
 
     <script src="/assets/js/three.min.js"></script>

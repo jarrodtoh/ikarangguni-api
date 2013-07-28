@@ -62,7 +62,7 @@ class Welcome extends CI_Controller {
     $_I1R_URL['ProcessImageOnly'] = 'http://spdc.i2r.a-star.edu.sg/rest/my3dface_c/ProcessImageOnly?';
     $_I1R_URL['GetPreviousImage'] = 'http://spdc.i2r.a-star.edu.sg/rest/my3dface_c/GetPreviousImage?';
 
-    $_FILENAME = md5($user['email']);
+    $_FILENAME = md5($user['email']) .time();
 
     $_ProcessImageOnly['fName'] = $_FILENAME . '.jpg';
     $_ProcessImageOnly['b64String'] = base64_encode($_binary_data);
@@ -114,6 +114,7 @@ class Welcome extends CI_Controller {
 
     $data['OBJFACE_FILES']['OBJ'] = '/tmp/' . $_FILENAME . '.obj';
     $data['OBJFACE_FILES']['MTL'] = '/tmp/' . $_FILENAME . '.mtl';
+    $data['fName'] = $_GetPreviousImage['fName'];
 
 
     $this->load->view('face_3d', $data);
