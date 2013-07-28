@@ -4,6 +4,7 @@
 # TasteBuds Specific
 /application/config/*-localhost.php
 /application/images/*
+/tmp/*
 /tmp/cache/*
 /media
 /user_guide
