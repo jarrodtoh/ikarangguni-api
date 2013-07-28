@@ -6,6 +6,7 @@
 /application/images/*
 /tmp/*
 /tmp/cache/*
+!/tmp/index.html
 /media
 /user_guide
 
